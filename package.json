@@ -5,7 +5,8 @@
     "author": "Jorge Andres Padilla",
     "scripts": {
         "dev": "ts-node src/index.ts",
-        "db:init": "prisma migrate dev --name init"
+        "db:init": "prisma migrate dev --name init",
+        "db:seed": "prisma db seed"
     },
     "dependencies": {
         "@prisma/client": "5.7.1",

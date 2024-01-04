@@ -6,3 +6,20 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Usuario {
+  id          String   @id @default(uuid())
+  nombre      String
+  apellido    String
+  usuario     String   @unique
+  ciudad      String
+}
+
+model GeoreferenciaCiudad {
+  id            String   @id @default(uuid())
+  ciudad        String
+  pais          String
+  codigoPostal  String
+  latitud       Float
+  longitud      Float
+}
