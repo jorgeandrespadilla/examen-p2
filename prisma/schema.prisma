@@ -17,7 +17,7 @@ model Usuario {
 
 model GeoreferenciaCiudad {
   id            String   @id @default(uuid())
-  ciudad        String
+  ciudad        String   @unique
   pais          String
   codigoPostal  String
   latitud       Float
