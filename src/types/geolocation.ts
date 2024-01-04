@@ -11,7 +11,7 @@ export interface GeolocationDetail {
 }
 
 export interface Alt {
-    loc: LOC;
+    loc: LOC[] | LOC;
 }
 
 export interface LOC {

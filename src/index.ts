@@ -81,14 +81,16 @@ app.post('/cargarGeoreferencia', async (req, res) => {
       ciudad: city
     }
   });
-
-  const geolocationInfo = await getCityGeolocationInfo(city);
-
   if (ciudad) {
     res.status(200).json({ message: `La georeferencia para la ciudad ${city} ya existe` });
     return;
   }
-  
+
+  const geolocationInfo = await getCityGeolocationInfo(city);
+  if (!geolocationInfo) {
+    res.status(404).json({ error: `Información de georeferencia no encontrada para la ciudad ${city}` });
+    return;
+  }
   await prisma.georeferenciaCiudad.create({
     data: geolocationInfo
   });
