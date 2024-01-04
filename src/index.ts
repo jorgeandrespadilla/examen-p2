@@ -17,6 +17,11 @@ app.get('/usuarios', async (req, res) => {
 
 app.get('/usuarios/:id', async (req, res) => {
   const id = req.params.id;
+  if (!id) {
+    res.status(400).json({ error: 'El ID de usuario es requerido' });
+    return;
+  }
+
   const user = await prisma.usuario.findUnique({
     where: {
       id: id
@@ -36,6 +41,11 @@ app.get('/georeferencias', async (req, res) => {
 
 app.get('/georeferenciaPorCiudad/:ciudad', async (req, res) => {
   const ciudad = req.params.ciudad;
+  if (!ciudad) {
+    res.status(400).json({ error: 'La ciudad es requerida' });
+    return;
+  }
+
   const georeferencia = await prisma.georeferenciaCiudad.findUnique({
     where: {
       ciudad: ciudad
@@ -50,6 +60,10 @@ app.get('/georeferenciaPorCiudad/:ciudad', async (req, res) => {
 
 app.post('/cargarGeoreferencia', async (req, res) => {
   const usuario: string = req.body.usuario;
+  if (!usuario) {
+    res.status(400).json({ error: 'El usuario es requerido' });
+    return;
+  }
 
   const user = await prisma.usuario.findUnique({
     where: {
