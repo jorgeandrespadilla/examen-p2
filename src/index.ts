@@ -29,9 +29,28 @@ app.get('/usuarios/:id', async (req, res) => {
   res.json(user);
 })
 
-app.post('/geolocalizacion', async (req, res) => {
-  const usuario = req.body.usuario;
-  // Validar que el usuario exista
+app.get('/georeferencias', async (req, res) => {
+  const georeferencias = await prisma.georeferenciaCiudad.findMany();
+  res.json(georeferencias);
+})
+
+app.get('/georeferenciaPorCiudad/:ciudad', async (req, res) => {
+  const ciudad = req.params.ciudad;
+  const georeferencia = await prisma.georeferenciaCiudad.findUnique({
+    where: {
+      ciudad: ciudad
+    }
+  });
+  if (!georeferencia) {
+    res.status(404).json({ error: `Información de georeferencia no encontrada para la ciudad ${ciudad}` });
+    return;
+  }
+  res.json(georeferencia);
+})
+
+app.post('/cargarGeoreferencia', async (req, res) => {
+  const usuario: string = req.body.usuario;
+
   const user = await prisma.usuario.findUnique({
     where: {
       usuario: usuario
@@ -42,13 +61,31 @@ app.post('/geolocalizacion', async (req, res) => {
     return;
   }
 
+  const city = user.ciudad;
+  const ciudad = await prisma.georeferenciaCiudad.findUnique({
+    where: {
+      ciudad: city
+    }
+  });
+
   const data = await getCityGeolocation(city);
+  const georeferencia: Prisma.GeoreferenciaCiudadCreateInput = {
+    ciudad: city,
+    pais: data.alt.loc.countryname,
+    codigoPostal: data.alt.loc.postal,
+    latitud: parseFloat(data.latt),
+    longitud: parseFloat(data.longt),
+  }
 
-})
-
-app.get('/informacionGeo', async (req, res) => {
-  const city = req.query.city as string;
-  res.json(data);
+  if (ciudad) {
+    res.status(200).json({ message: `La georeferencia para la ciudad ${city} ya existe` });
+    return;
+  }
+  
+  await prisma.georeferenciaCiudad.create({
+    data: georeferencia
+  });
+  res.status(200).json({ message: `Georeferencia creada para la ciudad ${city}` });
 })
 
 const server = app.listen(3000, () =>
