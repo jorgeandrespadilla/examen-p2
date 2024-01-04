@@ -1,7 +1,7 @@
-import { Prisma, PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 import express from 'express'
 import dotenv from 'dotenv'
-import { getCityGeolocation } from './services/geolocation';
+import { getCityGeolocationInfo } from './services/geolocation';
 
 dotenv.config();
 
@@ -68,14 +68,7 @@ app.post('/cargarGeoreferencia', async (req, res) => {
     }
   });
 
-  const data = await getCityGeolocation(city);
-  const georeferencia: Prisma.GeoreferenciaCiudadCreateInput = {
-    ciudad: city,
-    pais: data.alt.loc.countryname,
-    codigoPostal: data.alt.loc.postal,
-    latitud: parseFloat(data.latt),
-    longitud: parseFloat(data.longt),
-  }
+  const geolocationInfo = await getCityGeolocationInfo(city);
 
   if (ciudad) {
     res.status(200).json({ message: `La georeferencia para la ciudad ${city} ya existe` });
@@ -83,7 +76,7 @@ app.post('/cargarGeoreferencia', async (req, res) => {
   }
   
   await prisma.georeferenciaCiudad.create({
-    data: georeferencia
+    data: geolocationInfo
   });
   res.status(200).json({ message: `Georeferencia creada para la ciudad ${city}` });
 })

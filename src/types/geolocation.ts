@@ -1,3 +1,7 @@
+import { Prisma } from "@prisma/client";
+
+export type GeolocationInfo = Prisma.GeoreferenciaCiudadCreateInput; 
+
 export interface GeolocationDetail {
     standard:  Standard;
     longt:     string;
