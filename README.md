@@ -25,8 +25,10 @@ DATABASE_URL="postgresql://<usuario>:<clave>@<host>:<puerto>/<nombre de la base 
 1. Ejecutar el siguiente comando en la raíz del proyecto para ejecutar las migraciones de la base de datos:
 
 ```bash
-npm run db:restore
+npm run db:init
 ```
+
+> Este comando ejecuta las migraciones de la base de datos e inicializa los datos de prueba.
 
 ## Ejecución
 
