@@ -17,18 +17,18 @@ npm install
 2. Crear un archivo `.env` en la raíz del proyecto con las siguientes variables de entorno:
 
 ```bash
-DATABASE_URL="postgresql://<usuario>:<clave>@<host>:<puerto>/<nombre de la base de datos>?schema=public"
+DATABASE_URL=postgresql://<usuario>:<clave>@<host>:<puerto>/<nombre de la base de datos>?schema=public
 ```
 
 > Ver `.env.example` como ejemplo.
 
-2. Ejecutar el siguiente comando en la raíz del proyecto para ejecutar las migraciones de la base de datos:
+3. Ejecutar el siguiente comando en la raíz del proyecto para ejecutar las migraciones de la base de datos:
 
 ```bash
 npm run db:init
 ```
 
-1. Ejecutar el siguiente comando en la raíz del proyecto para insertar los datos de prueba en la base de datos:
+4. Ejecutar el siguiente comando en la raíz del proyecto para insertar los datos de prueba en la base de datos:
 
 ```bash
 npm run db:seed
